@@ -21,7 +21,7 @@ public class Post implements Serializable {
     private String category;
 
     private String urlImage;
-
+    @Size(max = 10000)
     private String body;
 
     @Temporal(TemporalType.DATE)
