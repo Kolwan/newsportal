@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
+    <head lang="ru">
+        <title>Новость</title>
+        <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
+        <!--/*/ <th:block th:include="admin :: admin-menu"></th:block> /*/-->
+        <div class="container ">
+            <div class="row">
+                <div class="box col-sm-offset-2 col-sm-7">
+                    <h1 align="center">Новость</h1>
+                    <form class="form-horizontal"  method="POST" th:action="@{/post/save}" th:object="${post}">
+                        <input type="hidden" th:field="*{id}"/>
+                        <div class="form-group">
+                            <label>Заголовок</label>
+                            <input class="form-control" type="text" th:field="*{title}" required="" />
+                        </div>
+                        <div class="form-group">
+                            <label>Категория</label>
+                            <select  class="form-control" th:field="*{category}">
+                                <option value="uncategorized">Без категории</option>
+                                <option th:each="category : ${category}" th:value="${category.url}" th:text="${category.name}"></option>
+                            </select>   
+                        </div>
+                        <div class="form-group">
+                            <label>Url изображения</label>
+                            <input class="form-control" type="url" th:field="*{urlImage}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Краткое описание</label>
+                            <textarea class="form-control textarea-post"  th:field="*{description}" required="" id="textarea1"/>
+                        </div>                  
+                        <div class="form-group">
+                            <label>Контент</label>
+                            <textarea class="form-control textarea-post" th:field="*{body}" required="" id="textarea2"></textarea>
+                        </div>
+                        <div class="btn btn-group-justified">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-success">Сохранить</button>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-danger" th:href="@{/admin}">Отменить</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/*/ <th:block th:include="index :: footer"></th:block> /*/-->
+        <script th:src="@{/js/myJs.js}"/>
+        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
+        <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
+
+    </body>
+</html>

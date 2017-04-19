@@ -1,0 +1,70 @@
+html{
+    position: relative;
+    min-height: 100%;
+}
+body{
+    margin-bottom: 60px;
+}
+a.link-to-news{
+    font-size: 20pt;
+}
+.textarea-post{
+    min-height: 200px;
+    resize: none;
+}
+.textarea-signature{
+    resize: none;
+}
+
+.title-post{
+    margin-bottom: 3%;
+}
+.image-post{
+    max-height: 100%;
+    max-width:  100%;
+    padding-bottom: 15px;
+}
+.text-post{
+    font-size: 14pt;
+    font-family: cursive;
+}
+.authorize-form{
+    margin-top: 10%;
+}
+.mini-image-post{
+    width: 150px;
+    height: 150px;
+}
+@media (min-width: 1510px)
+{
+    .container.screen-post{
+        width: 1490px;
+    }
+}
+.admin-href-all{
+    font-size: 17pt;
+}
+
+.avatar{
+    max-height: 150px;
+    max-width: 150px;
+
+}
+.footer{    
+    position: absolute;
+    top: 100%;    
+    width: 100%;
+    height: 60px;
+    background-color: #000;  
+
+}
+.footer-text{
+    padding: 15px;
+    color: #fff;
+}
+.button-up{
+    position: fixed;
+    top: 90%;    
+    left: 1%;
+    color: grey;
+}

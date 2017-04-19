@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
+    <head lang="ru">
+        <title>Управление</title>        
+        <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->       
+        <div th:fragment="admin-menu">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <h3>Новости</h3>
+                <ul class="nav nav-sidebar">
+                    <li>
+                        <a th:href="@{/admin/post/new}">
+                            <i class="fa fa-plus"></i> Создать новость
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/category}">
+                            <i class="fa fa-gear"></i> Настройки категории новостей
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/post/list/all}">
+                            <i class="fa fa-gear"></i> Управление новостями
+                        </a>
+                    </li>
+                </ul>
+                <h3>Пользователи</h3>
+                <ul class="nav nav-sidebar">
+                    <li>
+                        <a th:href="@{/admin/person/users}">
+                            <i class="fa fa-users"></i> Список пользователей
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/person/admins}">
+                            <i class="fa fa-users"></i> Список администраторов
+                        </a>
+                    </li>                    
+                    <li>
+                        <a th:href="@{/admin/person/all}">
+                            <i class="fa fa-users"></i> Список всех пользователей
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>   
+        <!--/*/ <th:block th:include="index :: footer"></th:block> /*/-->
+        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
+        <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
+    </body>
+</html>

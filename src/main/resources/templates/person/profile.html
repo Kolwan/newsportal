@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
+    <head lang="ru">
+        <title>Профиль пользователя</title>
+        <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <!--Навигационная панель-->
+        <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->      
+        <div class="container ">
+            <div class="row">
+                <div class="box col-sm-offset-2 col-sm-7">
+                    <h3 class="text-center">Профиль</h3>
+                    <div class="panel panel-default center-block">
+                        <div class="panel-body">
+                            <img th:src="${person.urlImage}" class="img-circle avatar center-block"/>
+                            <h3 class="text-center" th:text="${person.surname} +' '+${person.name}"></h3>
+                            <p class="text-center" th:text="${person.signature}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/*/ <th:block th:include="index :: footer"></th:block> /*/-->
+        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
+        <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
+    </body>
+</html>

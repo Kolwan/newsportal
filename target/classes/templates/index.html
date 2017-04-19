@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head th:fragment="head" lang="ru">
+        <title>Добро пожаловать</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet"  th:href="@{/css/style.css}"/>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+        <link rel="stylesheet"  th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}"/>
+        <link rel="shortcut icon" th:href="@{/css/image/favicon.jpg}" type="image/jpg"/>
+    </head>
+    <body>
+        <div th:fragment="navbar">
+            <div id="header" class="navbar navbar-inverse navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header" >                           
+                        <a th:href="@{/}" class="navbar-brand">Новостной портал</a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li> 
+                            <div sec:authorize="isAnonymous()">
+                                <a class="btn btn-primary navbar-btn" th:href="@{/login}">
+                                    <i class="fa fa-sign-in"></i>Войти</a>  
+                            </div>
+                        </li>
+                        <li>
+                            <div sec:authorize="isAuthenticated()">
+                                <form class="navbar-form navbar-left" th:action="@{/logout}" method="post">      
+                                    <ul class="nav nav-pills">
+                                        <li class="dropdown">
+                                            <a href="#" data-toggle="dropdown" class="dropdown-toggle" sec:authentication="name">
+                                                <b class="caret"></b>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li sec:authorize="hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')"><a th:href="@{/user}">Профиль</a></li>
+                                                <li sec:authorize="hasRole('ROLE_ADMIN') OR hasRole('SUPER_ADMIN')">
+                                                    <a th:href="@{/admin}">Администрирование</a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li><div class="btn-group-justified">
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-default" type="submit">Выйти</button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>                         
+                                    </ul>
+                                </form>              
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>            
+        </div>
+        <!--Внутренняя структура-->
+        <div class="container screen-post">
+            <div class="row">
+                <div class="col-sm-8 col-lg-8">
+                    <h2>Последние новости:</h2>
+                    <div class="thumbnail  col-sm-12" th:each="post : ${post}">    
+                        <table>
+                            <tr>
+                                <th>
+                                    <div class="col-md-4 col-xs-2">
+                                        <img class="mini-image-post"  th:src="${post.urlImage}" id="imageNews" alt="" />
+                                    </div>
+                                </th>
+                                <th>
+                                    <div th:fragment="href-post">
+                                        <div class=" col-sm-12">
+                                            <div th:fragment="mini-post">
+                                                <div class="caption">
+                                                    <div>
+                                                        <h3><a class="link-to-news"  th:href="@{/post/{category}/{id}(category=${post.category},id=${post.id})}" th:text="${post.title}">тут наша новость</a></h3>
+                                                    </div>
+                                                    <div>
+                                                        <p th:text="${post.description}"></p>
+                                                    </div>
+
+                                                    <span class="text-muted">Опубликовано:</span>
+                                                    <span class="text-danger" th:text="${post.datePublication}"></span>
+                                                    <span><a class="btn btn-link" th:href="@{/post/{category}/{id}(category=${post.category},id=${post.id})}">Посмотреть</a></span>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div th:fragment="blocks">
+                    <div class="col-xs-4 col-md-3 col-lg-2" >
+
+                        <h3>Новости</h3>
+                        <div class="list-group" >
+                            <a th:href="@{/}" class="list-group-item active">
+                                Последние новости
+                            </a>
+                            <a th:each="category : ${category}" class="list-group-item" th:href="@{/post/{category}(category=${category.url},page=0,size=5)}"><span th:text="${category.name}"></span></a>
+                            <a class="list-group-item" th:href="@{/post/uncategorized(page=0,size=5)}">Без категории </a>
+                            <a class="list-group-item" th:href="@{/post/all(page=0,size=5)}">Все</a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:fragment="footer">
+            <div class="footer">
+                <div class="container footer-text">
+                    <div class="row">
+                        <p>© 2017 Новостной портал </p>
+                    </div>
+                </div>
+            </div>
+        </div>       
+        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
+        <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
+    </body>
+</html>

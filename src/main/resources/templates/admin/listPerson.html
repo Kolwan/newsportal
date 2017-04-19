@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
+    <head lang="ru">   
+        <title>Управление</title> 
+        <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
+        <!--/*/ <th:block th:include="admin :: admin-menu"></th:block> /*/-->
+        <div class="col-sm-8 col-md-6" >
+            <table class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Не заблокирован</th>
+                        <th  th:if="${visible == true}">Управление</th> 
+                        <th sec:authorize="hasRole('ROLE_SUPER_ADMIN')">Дополнительно</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="person : ${person}">
+                        <td><a class=" btn-link"  th:href="@{/user/{id}(id=${person.id})}" th:text="${person.email}"></a></td>
+                        <td th:text="${person.name}"></td>
+                        <td th:text="${person.surname}"></td>                       
+                        <td th:text="${person.nonLocked}"></td>
+                        <td  th:if="${visible == true}"> 
+                            <div class="btn-group">
+                                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-gear"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li th:if="${person.nonLocked == true}"><a th:href="@{/admin/person/{id}/blocked(id=${person.id})'}">Заблокировать</a></li>
+                                    <li th:if="${person.nonLocked == false}"><a th:href="@{/admin/person/{id}/unblocked(id=${person.id})'}">Разблокировать</a></li>    
+                                </ul>
+                            </div>
+                        </td>
+                        <td sec:authorize="hasRole('ROLE_SUPER_ADMIN')">
+                            <div th:if="${person.rolePerson.equals('ROLE_USER')}" class="btn-group">
+                                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-user-plus"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a th:href="@{/admin/person/admins/new/{id}(id=${person.id})}">Сделать администратором</a></li>
+                                </ul>
+                            </div>
+                            <div th:if="${person.rolePerson.equals('ROLE_ADMIN') or person.rolePerson.equals('ROLE_SUPER_ADMIN')}" class="btn-group">
+                                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-user-times"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a th:href="@{/admin/person/admin/delete/{id}(id=${person.id})}">Снять полномочия</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+        <!--/*/ <th:block th:include="index :: footer"></th:block> /*/-->
+        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
+        <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
+    </body>
+</html>

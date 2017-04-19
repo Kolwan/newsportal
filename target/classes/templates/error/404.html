@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Добро пожаловать</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet"  th:href="@{/css/style.css}"/>
+        <link rel="stylesheet"  th:href="@{/css/error.css}"/>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+        <link rel="shortcut icon" th:href="@{/css/image/favicon.jpg}" type="image/jpg"/>
+    </head>
+    <body>
+        <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
+        <div class="container">
+            <div class="row">
+                <p class="text-center error-code">404</p>     
+                <p class="text-center error-text">Страница не найдена</p>
+                <div class="col-sm-offset-5">
+                    <a class="btn btn-link btn-lg"  th:href="@{/}">Вернуться на главную</a>
+                </div>
+            </div>
+        </div>
+        <!--/*/ <th:block th:include="index :: footer"></th:block> /*/-->
+        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
+        <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
+    </body>
+</html>

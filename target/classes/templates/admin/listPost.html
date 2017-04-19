@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
+    <head lang="ru">    
+        <title>Управление</title> 
+        <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
+        <!--/*/ <th:block th:include="admin :: admin-menu"></th:block> /*/-->
+        <div class="col-sm-8 col-md-6" >
+            <table class="table table-hover table-condensed">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Заголовок</th>
+                        <th>Управление</th>
+                    </tr>
+                </thead>
+                <tbody class="list-group">
+                    <tr th:each="post : ${post}">
+                        <td>                           
+                            <a class="btn btn-link list-group-item"  th:href="@{/post/{category}/{id}(category=${post.category},id=${post.id})}" th:text="${post.title}"></a> 
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-gear"></i> <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a th:href="@{/admin/post/{category}/{id}/alter(category=${post.category},id=${post.id})}">Редактировать</a></li>                                    
+                                    <li class="divider"></li>
+                                    <li><a th:href="@{/admin/post/{category}/{id}/delete(category=${post.category},id=${post.id})}">Удалить</a></li>
+                                </ul>                                
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+        <!--/*/ <th:block th:include="index :: footer"></th:block> /*/-->
+        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
+        <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
+    </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
+    <head>
+        <title>Регистрация</title>
+        <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <div class="container authorize-form">
+            <div class="row">
+                <div class="col-sm-offset-4 col-xs-12 col-sm-4 proto">
+                    <form th:action="@{/registration}"  method="POST" th:object="${user}">
+                        <h2 align="center">Регистрация</h2>
+                        <div class="form-group">
+                            <p>Имя</p>
+                            <input type="text" class="form-control" th:field="*{name}" placeholder="Введите имя"/>
+                            <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
+                        </div>
+                        <div class="form-group">
+                            <p>Фамилия</p>
+                            <input type="text" class="form-control" th:field="*{surname}" placeholder="Введите фамилию" /> 
+                            <p class="text-danger" th:if="${#fields.hasErrors('surname')}"  th:errors="*{surname}">Surname Error</p>
+                        </div>
+                        <div class="form-group">
+                            <p>Email</p>
+                            <input type="email" class="form-control" th:field="*{email}" placeholder="Введите email"/>
+                            <p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
+                        </div>
+                        <div class="form-group">
+                            <p>Пароль</p>
+                            <input type="password" class="form-control" th:field="*{password}" placeholder="Придумайте пароль"/>
+                            <p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</p>
+                        </div>
+                        <div class="form-group">
+                            <p>Потверждение</p>
+                            <input type="password" class="form-control" th:field="*{confirmPassword}" placeholder="Потвердите пароль"/>
+                            <p class="text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">password Error</p>
+                        </div>
+                        <div class="btn-group-justified">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-success">Продолжить</button>
+                            </div>
+                            <div class="btn-group">
+                                <a th:href="@{/}" class="btn btn-danger">Вернуться на главную</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div> 
+        </div> 
+        <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
+        <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
+    </body>
+</html>
