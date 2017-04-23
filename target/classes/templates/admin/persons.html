@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
-    <head lang="ru">        
+    <head lang="ru">   
         <title>Управление</title> 
         <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
     </head>
@@ -8,53 +8,59 @@
         <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
         <!--/*/ <th:block th:include="admin :: admin-menu"></th:block> /*/-->
         <div class="col-sm-8 col-md-6" >
-            <ul class="nav nav-sidebar">
-                <li>
-                    <a class="nav nav-sidebar" href="#NewCategory" data-toggle="modal">Добавить новую категорию новостей</a>
-                </li>
-            </ul>
+            <div sec:authorize="hasRole('ROLE_SUPER_ADMIN')">
+                <ul class="nav nav-sidebar">
+                    <li>
+                        <a class="nav nav-sidebar" href="#NewAdmin" data-toggle="modal">Добавить администратора</a>
+                    </li>
+                </ul>
+            </div>
             <table class="table table-hover table-condensed">
-                <thead class="thead-inverse">
+                <thead>
                     <tr>
-                        <th>Наименование категории новостей</th>
-                        <th>Url новости</th>
-                        <th>Управление</th>
+                        <th>Email</th>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Не заблокирован</th>
+                        <th sec:authorize="hasRole('ROLE_SUPER_ADMIN')">Дополнительно</th>
                     </tr>
                 </thead>
-                <tbody class="list-group">
-                    <tr th:each="categories : ${categories}">
-                        <td th:text="${categories.name}">                           
-                        </td>
-                        <td th:text="${categories.url}">
-                        </td>
-                        <td>
-                            <div class="btn-group">
+                <tbody>
+                    <tr th:each="person : ${person}">
+                        <td><a class=" btn-link"  th:href="@{/user/{id}(id=${person.id})}" th:text="${person.email}"></a></td>
+                        <td th:text="${person.name}"></td>
+                        <td th:text="${person.surname}"></td>                       
+                        <td th:text="${person.nonLocked}"></td>
+                        <td sec:authorize="hasRole('ROLE_SUPER_ADMIN')">
+                            <div  class="btn-group">
                                 <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-gear"></i> <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    <li><a  th:href="@{/admin/category/{id}/delete(id=${categories.id})}">Удалить</a></li>
+                                    <li th:if="${person.nonLocked == true}"><a th:href="@{/admin/person/settings/{id}/blocked(id=${person.id})}">Заблокировать</a></li>
+                                    <li th:if="${person.nonLocked == false}"><a th:href="@{/admin/person/settings/{id}/unblocked(id=${person.id})}">Разблокировать</a></li>    
+                                    <li><a th:href="@{/admin/person/settings/{id}/delete(id=${person.id})}">Удалить</a></li>
                                 </ul>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table> 
-            <div id="NewCategory" class="modal fade">
+            <div sec:authorize="hasRole('ROLE_SUPER_ADMIN')"  id="NewAdmin" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-                            <h4 class="modal-title">Создание категории</h4>
+                            <h4 class="modal-title">Добавление администратора</h4>
                         </div>
                         <div class="modal-footer">
                             <div class="col-md-offset-3 col-md-6">
-                                <form class="form-horizontal"  method="POST" th:action="@{/admin/category}" th:object="${category}">
+                                <form class="form-horizontal"  method="POST" th:action="@{/admin/person}" th:object="${admin}">
                                     <div class="form-group">
-                                        <p class="text-left">Наименование категории</p>
-                                        <input class="form-control" type="text" th:field="*{name}" required="" />
+                                        <p class="text-left">email</p>
+                                        <input class="form-control" type="email" th:field="*{email}" required="" />
                                     </div>
                                     <div class="form-group">
-                                        <p class="text-left">Категория ввиде части ссылки</p>
-                                        <input class="form-control" type="text" th:field="*{url}" required="" />
+                                        <p class="text-left">Пароль</p>
+                                        <input class="form-control" type="password" th:field="*{password}" required="" />
                                     </div>
                                     <div class="btn btn-group-justified">
 

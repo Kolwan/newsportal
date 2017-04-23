@@ -3,6 +3,8 @@ package com.student.newsportalspringboot.controllers;
 import com.student.newsportalspringboot.entities.Post;
 import com.student.newsportalspringboot.repositories.CategoryRepository;
 import com.student.newsportalspringboot.repositories.PostRepository;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,8 @@ public class PostController {
 
     private PostRepository postRepository;
     private CategoryRepository categoryRepository;
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     @Autowired
     public void setRepository(PostRepository postRepository, CategoryRepository categoryRepository) {
@@ -38,7 +42,6 @@ public class PostController {
             mav.setStatus(HttpStatus.NOT_FOUND);
             mav.setViewName("error/404");
         }
-
         return mav;
     }
 
@@ -63,6 +66,9 @@ public class PostController {
         if (postRepository.findOne(post.getId()) != null) {
             Post news = postRepository.findOne(post.getId());
             post.setDatePublication(news.getDatePublication());
+        }
+        if (post.getDatePublication() == null) {
+            post.setDatePublication(dateFormat.format(new Date()));
         }
         postRepository.save(post);
         return "redirect:/post/" + post.getCategory() + "/" + post.getId();

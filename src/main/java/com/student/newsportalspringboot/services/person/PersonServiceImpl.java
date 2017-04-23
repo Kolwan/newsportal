@@ -1,9 +1,8 @@
 package com.student.newsportalspringboot.services.person;
 
-import com.student.newsportalspringboot.entities.User;
+import com.student.newsportalspringboot.entities.Admin;
 import com.student.newsportalspringboot.entities.Person;
 import com.student.newsportalspringboot.repositories.PersonRepository;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -16,7 +15,6 @@ public class PersonServiceImpl implements PersonService {
     private PasswordEncoder passwordEncoder;
     private PersonRepository personRepository;
 
-    private final String roleUser = "ROLE_USER";
     private final String roleAdmin = "ROLE_ADMIN";
 
     @Autowired
@@ -36,42 +34,24 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person savePerson(User user) {
-        Person person = new Person();
-        person.setEmail(user.getEmail());
-        person.setName(user.getName());
-        person.setSurname(user.getSurname());
-        person.setRolePerson(roleUser);
-        person.setNonLocked(true);
-        person.setPassword(passwordEncoder.encode(user.getPassword()));
-        return personRepository.save(person);
-
-    }
-
-    @Override
     public Person saveProfile(Person person) {
-
         return personRepository.save(person);
     }
 
     @Override
-    public Person saveAdmin(Person person) {
+    public Person saveAdmin(Admin admin) {
+        Person person = new Person();
+        person.setEmail(admin.getEmail());
+        person.setPassword(passwordEncoder.encode(admin.getPassword()));
+        person.setNonLocked(true);
         person.setRolePerson(roleAdmin);
         return personRepository.save(person);
 
     }
 
     @Override
-    public Person removeAdmin(Person person) {
-        person.setRolePerson(roleUser);
-        return personRepository.save(person);
-    }
-
-    @Override
     public Person unblockPerson(Person person) {
-        if (person.getRolePerson().equals(roleUser)) {
-            person.setNonLocked(true);
-        }
+        person.setNonLocked(true);
         return personRepository.save(person);
     }
 
@@ -92,8 +72,4 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.findByEmail(email);
     }
 
-    @Override
-    public Set<Person> findAllByRole(String role) {
-        return personRepository.findAllByRolePerson(role);
-    }
 }

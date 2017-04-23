@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.student.newsportalspringboot.services.person;
 
 import com.student.newsportalspringboot.entities.Person;
@@ -17,10 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- *
- * @author student
- */
 @Service
 public class PersonDetailsServiceImpl implements UserDetailsService {
 
@@ -39,7 +30,7 @@ public class PersonDetailsServiceImpl implements UserDetailsService {
 
         GrantedAuthority authority = new SimpleGrantedAuthority(user.getRolePerson());
         UserDetails userDetails = (UserDetails) new User(user.getEmail(),
-                user.getPassword(),true, true, true,user.isNonLocked(), Arrays.asList(authority));
+                user.getPassword(), true, true, true, user.isNonLocked(), Arrays.asList(authority));
         return userDetails;
     }
 

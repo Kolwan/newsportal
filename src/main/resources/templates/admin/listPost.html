@@ -26,7 +26,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a th:href="@{/admin/post/{category}/{id}/alter(category=${post.category},id=${post.id})}">Редактировать</a></li>                                    
                                     <li class="divider"></li>
-                                    <li><a th:href="@{/admin/post/{category}/{id}/delete(category=${post.category},id=${post.id})}">Удалить</a></li>
+                                    <li sec:authorize="hasRole('ROLE_ADMIN')" ><a th:href="@{/admin/post/{category}/{id}/delete(category=${post.category},id=${post.id})}">Удалить</a></li>
                                 </ul>                                
                             </div>
                         </td>

@@ -1,9 +1,7 @@
 package com.student.newsportalspringboot;
 
-
 import static org.springframework.boot.SpringApplication.run;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 
 @SpringBootApplication
 public class Application {
@@ -12,5 +10,5 @@ public class Application {
         run(Application.class, args);
 
     }
-    
+
 }

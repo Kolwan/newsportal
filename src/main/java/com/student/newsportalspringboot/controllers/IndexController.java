@@ -50,7 +50,7 @@ public class IndexController {
     @RequestMapping("post/{category}")
     public ModelAndView ListPost(@PathVariable String category, @PageableDefault(sort = "datePublication", direction = Sort.Direction.DESC) Pageable pageable) {
         ModelAndView mav = new ModelAndView();
-        if (categoryRepository.existsByName(category)) {
+        if (categoryRepository.existsByUrl(category)) {
             mav.setViewName("news/listPost");
             Page<Post> postPage = postRepository.findAllByCategory(category, pageable);
             PageWrapper<Post> page = new PageWrapper<>(postPage, "/post/" + category);

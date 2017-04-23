@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CategoryRepository extends CrudRepository<Category, Integer> {
 
-    public boolean existsByName(String name);
+    public boolean existsByUrl(String url);
 
 }

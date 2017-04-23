@@ -1,6 +1,5 @@
 package com.student.newsportalspringboot.controllers;
 
-import com.student.newsportalspringboot.entities.User;
 import com.student.newsportalspringboot.entities.Person;
 import com.student.newsportalspringboot.entities.ProfilePerson;
 import com.student.newsportalspringboot.services.person.PersonService;
@@ -38,32 +37,6 @@ public class PersonController {
     @RequestMapping("login")
     public String login() {
         return "person/login";
-    }
-
-    @GetMapping("/registration")
-    public ModelAndView Registration() {
-        ModelAndView mav = new ModelAndView("person/newUser");
-        mav.addObject("user", new User());
-        return mav;
-    }
-
-    @PostMapping("/registration")
-    public ModelAndView savePerson(@Valid User user, BindingResult bindingResult) {
-        ModelAndView mav = Registration();
-        personValidator.validate(user, bindingResult);
-        if (bindingResult.hasErrors()) {
-            mav.setStatus(HttpStatus.BAD_REQUEST);
-            return mav;
-        }
-        personService.savePerson(user);
-        mav.setViewName("redirect:/login");
-        return mav;
-    }
-
-    @RequestMapping("user/delete/{id}")
-    public String delete(@PathVariable Integer id) {
-        personService.deletePerson(id);
-        return "";
     }
 
     @GetMapping("user")

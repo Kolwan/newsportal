@@ -1,5 +1,6 @@
 package com.student.newsportalspringboot.controllers;
 
+import com.student.newsportalspringboot.entities.Admin;
 import com.student.newsportalspringboot.entities.Category;
 import com.student.newsportalspringboot.entities.Person;
 import com.student.newsportalspringboot.entities.Post;
@@ -7,7 +8,9 @@ import com.student.newsportalspringboot.repositories.CategoryRepository;
 import com.student.newsportalspringboot.repositories.PostRepository;
 import com.student.newsportalspringboot.services.person.PersonService;
 import com.student.newsportalspringboot.services.post.PageWrapper;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,9 +27,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class AdminController {
 
     private PersonService personService;
-    private final boolean visiblesOptionForAdmin = true;
     private PostRepository postRepository;
     private CategoryRepository categoryRepository;
+
+    @Value("${default.user.name}")
+    private String name;
 
     @Autowired
     public void setPostService(PersonService personService) {
@@ -44,24 +49,10 @@ public class AdminController {
         return "admin";
     }
 
-    @RequestMapping("admin/person/users")
-    public ModelAndView listUser(Person person) {
-        ModelAndView mav = new ModelAndView("admin/listPerson");
-        mav.addObject("person", personService.findAllByRole("ROLE_USER"));
-        mav.addObject("visible", visiblesOptionForAdmin);
-        return mav;
-    }
-
-    @RequestMapping("admin/person/admins")
-    public ModelAndView listAdmin(Person person) {
-        ModelAndView mav = new ModelAndView("admin/listPerson");
-        mav.addObject("person", personService.findAllByRole("ROLE_ADMIN"));
-        return mav;
-    }
-
-    @RequestMapping("admin/person/all")
-    public ModelAndView listAll(Person person) {
-        ModelAndView mav = new ModelAndView("admin/listPerson");
+    @GetMapping("admin/person")
+    public ModelAndView showPersons(Person person) {
+        ModelAndView mav = new ModelAndView("admin/persons");
+        mav.addObject("admin", new Admin());
         mav.addObject("person", personService.listAllPerson());
         return mav;
     }
@@ -74,37 +65,38 @@ public class AdminController {
         return mav;
     }
 
-    @RequestMapping("admin/person/admins/new/{id}")
-    public String makeAdmin(@PathVariable Integer id, Person person, Model model) {
-        person = personService.getPersonById(id);
-        personService.saveAdmin(person);
-        return "redirect:/admin/person/admins";
+    @PostMapping("admin/person")
+    public String saveAdmin(@Valid Admin admin, Model model) {
+        if (admin.getEmail().equals(name)) {
+            return "redirect:/admin/person";
+        }
+        personService.saveAdmin(admin);
+        return "redirect:/admin/person";
     }
 
-    @RequestMapping("admin/person/admins/delete/{id}")
+    @RequestMapping("admin/person/settings/{id}/delete")
     public String deleteAdmin(@PathVariable Integer id, Person person, Model model) {
-        person = personService.getPersonById(id);
-        personService.removeAdmin(person);
-        return "redirect:/admin/person/users";
+        personService.deletePerson(id);
+        return "redirect:/admin/person";
     }
 
-    @RequestMapping("admin/person/{id}/blocked")
+    @RequestMapping("admin/person/settings/{id}/blocked")
     public String blockedPerson(@PathVariable Integer id, Person person, Model model) {
         person = personService.getPersonById(id);
         personService.blockPerson(person);
-        return "redirect:/admin/person/users";
+        return "redirect:/admin/person";
     }
 
-    @RequestMapping("admin/person/{id}/unblocked")
+    @RequestMapping("admin/person/settings/{id}/unblocked")
     public String unblockedPerson(@PathVariable Integer id, Person person, Model model) {
         person = personService.getPersonById(id);
         personService.unblockPerson(person);
-        return "redirect:/admin/person/users";
+        return "redirect:/admin/person";
     }
 
     @PostMapping("admin/category")
     public String SaveCategory(Category category) {
-                 categoryRepository.save(category);
+        categoryRepository.save(category);
         return "redirect:/admin/category";
     }
 

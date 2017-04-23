@@ -20,8 +20,8 @@ public class Category implements Serializable {
     private String name;
 
     private String url;
-    
-       public int getId() {
+
+    public int getId() {
         return id;
     }
 

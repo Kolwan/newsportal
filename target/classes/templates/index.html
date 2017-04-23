@@ -98,7 +98,6 @@
                                 Последние новости
                             </a>
                             <a th:each="category : ${category}" class="list-group-item" th:href="@{/post/{category}(category=${category.url},page=0,size=5)}"><span th:text="${category.name}"></span></a>
-                            <a class="list-group-item" th:href="@{/post/uncategorized(page=0,size=5)}">Без категории </a>
                             <a class="list-group-item" th:href="@{/post/all(page=0,size=5)}">Все</a> 
                         </div>
                     </div>

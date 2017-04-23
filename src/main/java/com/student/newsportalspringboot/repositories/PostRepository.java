@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public interface PostRepository extends PagingAndSortingRepository<Post, Integer> {
 
     Page<Post> findAllByCategory(String category, Pageable pageable);
-    Set<Post> findAllByCategory(String category);    
-    long countByCategory(String category);
+
+    Set<Post> findAllByCategory(String category);
 
 }

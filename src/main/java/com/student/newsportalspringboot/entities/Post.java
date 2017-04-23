@@ -1,9 +1,10 @@
 package com.student.newsportalspringboot.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Table(name = "news")
@@ -13,22 +14,21 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")
     private int id;
-    @NotNull
+
+    @NotBlank
     private String title;
 
+    @NotBlank
     private String description;
 
     private String category;
 
+    @URL
     private String urlImage;
-    @Size(max = 10000)
+
+    @Size(max = 1000000)
     private String body;
-
-    @Temporal(TemporalType.DATE)
-    private Date modificationDate;
-
-    @Temporal(TemporalType.DATE)
-    private Date datePublication;
+    private String datePublication;
 
     public String getCategory() {
         return category;
@@ -78,25 +78,17 @@ public class Post implements Serializable {
         this.urlImage = urlImage;
     }
 
-    public Date getModificationDate() {
-        return modificationDate;
-    }
-
-    public void setModificationDate(Date modificationDate) {
-        this.modificationDate = modificationDate;
-    }
-
-    public Date getDatePublication() {
+    public String getDatePublication() {
         return datePublication;
     }
 
-    public void setDatePublication(Date datePublication) {
+    public void setDatePublication(String datePublication) {
         this.datePublication = datePublication;
     }
 
     @Override
     public String toString() {
-        return "Post{" + "id=" + id + ", title=" + title + ", description=" + description + ", category=" + category + ", urlImage=" + urlImage + ", modificationDate=" + modificationDate + ", datePublication=" + datePublication + ", body=" + body + '}';
+        return "Post{" + "id=" + id + ", title=" + title + ", description=" + description + ", category=" + category + ", urlImage=" + urlImage + ", body=" + body + ", datePublication=" + datePublication + '}';
     }
 
 }

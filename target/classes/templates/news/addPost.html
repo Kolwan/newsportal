@@ -20,7 +20,6 @@
                         <div class="form-group">
                             <label>Категория</label>
                             <select  class="form-control" th:field="*{category}">
-                                <option value="uncategorized">Без категории</option>
                                 <option th:each="category : ${category}" th:value="${category.url}" th:text="${category.name}"></option>
                             </select>   
                         </div>
