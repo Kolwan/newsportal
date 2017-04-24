@@ -1,6 +1,7 @@
 package com.student.newsportalspringboot.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
@@ -28,7 +29,9 @@ public class Post implements Serializable {
 
     @Size(max = 1000000)
     private String body;
-    private String datePublication;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datePublication;
 
     public String getCategory() {
         return category;
@@ -78,13 +81,15 @@ public class Post implements Serializable {
         this.urlImage = urlImage;
     }
 
-    public String getDatePublication() {
+    public Date getDatePublication() {
         return datePublication;
     }
 
-    public void setDatePublication(String datePublication) {
+    public void setDatePublication(Date datePublication) {
         this.datePublication = datePublication;
     }
+
+   
 
     @Override
     public String toString() {
