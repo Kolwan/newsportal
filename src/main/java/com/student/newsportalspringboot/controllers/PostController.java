@@ -3,7 +3,6 @@ package com.student.newsportalspringboot.controllers;
 import com.student.newsportalspringboot.entities.Post;
 import com.student.newsportalspringboot.repositories.CategoryRepository;
 import com.student.newsportalspringboot.repositories.PostRepository;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +18,6 @@ public class PostController {
     private PostRepository postRepository;
     private CategoryRepository categoryRepository;
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-
     @Autowired
     public void setRepository(PostRepository postRepository, CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
@@ -32,7 +29,7 @@ public class PostController {
         ModelAndView mav = new ModelAndView("news/post");
         try {
             if (postRepository.exists(Integer.parseInt(id))) {
-                mav.addObject("post", postRepository.findOne(Integer.parseInt(id)));
+                mav.addObject("post",postRepository.findOne(Integer.parseInt(id)) );
                 mav.addObject("category", categoryRepository.findAll());
             } else {
                 mav.setStatus(HttpStatus.NOT_FOUND);
@@ -68,7 +65,7 @@ public class PostController {
             post.setDatePublication(news.getDatePublication());
         }
         if (post.getDatePublication() == null) {
-            post.setDatePublication(dateFormat.format(new Date()));
+            post.setDatePublication(new Date());
         }
         postRepository.save(post);
         return "redirect:/post/" + post.getCategory() + "/" + post.getId();
