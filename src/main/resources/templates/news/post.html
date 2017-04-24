@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-sm-8" th:each="post : ${post}">
                     <span>Дата публикации:</span>
-                    <span class="text-danger" th:text="${post.datePublication}"></span>
+                    <span class="text-danger" th:if="${post.datePublication != null}" th:text="${#dates.format(post.datePublication, 'dd.MM.yyyy в hh:mm')}"></span>
                     <div class="btn-group" sec:authorize="hasRole('ROLE_ADMIN')">
                         <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-gear"></i> <span class="caret"></span></button>
                         <ul class="dropdown-menu">
