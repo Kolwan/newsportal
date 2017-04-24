@@ -16,10 +16,18 @@
                         <a th:href="@{/}" class="navbar-brand">Новостной портал</a>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
+                        <!--                        <li>
+                                                    <form class="navbar-form navbar-left">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" placeholder="Поиск"/>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-default">Найти</button>
+                                                    </form>
+                                                </li>-->
                         <li> 
                             <div sec:authorize="isAnonymous()">
                                 <a class="btn btn-primary navbar-btn" th:href="@{/login}">
-                                    <i class="fa fa-sign-in"></i>Войти</a>  
+                                    <i class="fa fa-sign-in"></i> Войти</a>  
                             </div>
                         </li>
                         <li>
@@ -78,7 +86,7 @@
                                                     </div>
 
                                                     <span class="text-muted">Опубликовано:</span>
-                                                    <span class="text-danger" th:text="${post.datePublication}"></span>
+                                                    <span class="text-danger" th:if="${post.datePublication != null}" th:text="${#dates.format(post.datePublication, 'dd.MM.yyyy в hh:mm')}"></span>
                                                     <span><a class="btn btn-link" th:href="@{/post/{category}/{id}(category=${post.category},id=${post.id})}">Посмотреть</a></span>
                                                 </div> 
                                             </div>
