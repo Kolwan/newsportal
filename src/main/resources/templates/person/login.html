@@ -2,52 +2,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
     <head>
         <title>Авторизация</title>
-        <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet"  th:href="@{/css/login.css}"/>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+        <link rel="stylesheet"  th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}"/>
+        <link rel="shortcut icon" th:href="@{/css/image/favicon.jpg}" type="image/jpg"/>
     </head>
     <body>
-        <div class="container authorize-form">
-            <div class="row">
-                <div class="col-xs-offset-4 col-xs-7 col-sm-4">
-                    <div th:if="${param.error}">
-                        <label>Ошибка в авторизации</label>
-                    </div>
-                    <div th:if="${param.logout}">
-                        <label>
-                            Вы вышли из системы.
-                        </label>
-                    </div>
-                    <form th:action="@{/login}" method="post">
-                        <h2 align="center">Авторизация</h2>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-user-o"></i>
-                                </div>
-                                <input type="email" class="form-control" required="" placeholder="email" name="email" value="" autofocus="autofocus"></input>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-lock"></i>
-                                </div>
-                                <input type="password" class="form-control" required="" placeholder="пароль" name="password" value=""></input>
-                            </div>
-                        </div>
-                        <div class="btn-group-justified">
-                            <div class="btn-group">
-                                <button type="submit" class="btn btn-primary">Войти</button>
-                            </div>    
-                            <div class="btn-group">
-                                <a class="btn btn-danger" th:href="@{/}">Вернутся</a>
-                            </div> 
-                        </div>
-                        <!--                        <div class="form-group">
-                                                    <p align="center">У вас нет аккаунта?<a th:href="@{/registration}">Тогда создайте</a></p>
-                                                </div>-->
-                    </form>
-                </div>
+        <div class="center-block authorize-form">
+            <div th:if="${param.error}">
+                <label>Ошибка в авторизации</label>
             </div>
+            <div th:if="${param.logout}">
+                <label>
+                    Вы вышли из системы.
+                </label>
+            </div>
+            <form th:action="@{/login}" method="post">
+                <h2 class="text-center">Авторизация</h2>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-user-o"></i>
+                        </div>
+                        <input type="email" class="form-control" required="" placeholder="email" name="email" value="" autofocus="autofocus"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-lock"></i>
+                        </div>
+                        <input type="password" class="form-control" required="" placeholder="пароль" name="password" value=""></input>
+                    </div>
+                </div>
+                <div class="btn-group-justified">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">Войти</button>
+                    </div>    
+                    <div class="btn-group">
+                        <a class="btn btn-danger" th:href="@{/}">Вернутся</a>
+                    </div> 
+                </div>
+            </form>
         </div>
         <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
         <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>

@@ -8,9 +8,7 @@
         <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
         <div class="container screen-post">
             <div class="row">
-                <div class="col-sm-8" th:each="post : ${post}">
-                    <span>Дата публикации:</span>
-                    <span class="text-danger" th:text="${post.datePublication}"></span>
+                <div class="col-sm-9 well" th:each="post : ${post}">
                     <div class="btn-group" sec:authorize="hasRole('ROLE_ADMIN')">
                         <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-gear"></i> <span class="caret"></span></button>
                         <ul class="dropdown-menu">
@@ -20,7 +18,7 @@
                         </ul>
                         <div id="ModalDelete" class="modal fade">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content">s
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
                                         <h4 class="modal-title">Потвердите действие</h4>
@@ -33,10 +31,7 @@
                             </div>
                         </div>
                     </div>
-                    <h1 th:text="${post.title}" class="title-post">Name</h1>
-                    <div class="center">
-                        <img class="image-post" th:src="${post.urlImage}"/>
-                    </div>
+                    <h1 th:text="${post.title}" class="title-post text-center">Name</h1>
                     <div th:utext="${post.body}" class="text-post">Text</div> 
                     <div id="disqus_thread"></div>
                 </div>
@@ -48,25 +43,24 @@
         <script>
 
             /**
-            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+             *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+             *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
             /*
-            var disqus_config = function () {
-            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-            };
-            */
-            (function() { // DON'T EDIT BELOW THIS LINE
-            var d = document, s = d.createElement('script');
-            s.src = 'https://newsportaltechnology.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
+             var disqus_config = function () {
+             this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+             this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+             };
+             */
+            (function () { // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                s.src = 'https://newsportaltechnology.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
             })();
         </script>
         <!--/*/ <th:block th:include="index :: footer"></th:block> /*/-->
         <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
         <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
-
-
+        
     </body>
 </html>

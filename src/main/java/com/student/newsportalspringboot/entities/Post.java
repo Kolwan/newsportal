@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.URL;
 @Table(name = "news")
 public class Post implements Serializable {
 
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")

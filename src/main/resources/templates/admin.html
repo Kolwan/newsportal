@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
-    <head lang="ru">
-        <title>Управление</title>        
-        <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+    <head th:fragment="head" lang="ru">
+        <title>Управление</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet" th:href="@{/css/admin.css}"/>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+        <link rel="stylesheet"  th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}"/>
+        <link rel="shortcut icon" th:href="@{/css/image/favicon.jpg}" type="image/jpg"/>
     </head>
     <body>
-        <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->       
+        <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->   
+        <div class="col-sm-3">
         <div th:fragment="admin-menu">
-            <div class="col-sm-3 col-md-2 sidebar">
                 <h3>Новости</h3>
                 <ul class="nav nav-sidebar">
                     <li>

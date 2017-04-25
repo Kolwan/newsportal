@@ -19,7 +19,7 @@
                         <li> 
                             <div sec:authorize="isAnonymous()">
                                 <a class="btn btn-primary navbar-btn" th:href="@{/login}">
-                                    <i class="fa fa-sign-in"></i>Войти</a>  
+                                    <i class="fa fa-sign-in"></i> Войти</a>  
                             </div>
                         </li>
                         <li>
@@ -55,45 +55,41 @@
         <!--Внутренняя структура-->
         <div class="container screen-post">
             <div class="row">
-                <div class="col-sm-8 col-lg-8">
-                    <h2>Последние новости:</h2>
-                    <div class="thumbnail  col-sm-12" th:each="post : ${post}">    
+                <div class="well col-sm-8">
+                    <p class="nav-title text-center">Последние новости:</p>
+                    <div class="thumbnail" th:each="post : ${post}">    
                         <table>
                             <tr>
-                                <th>
-                                    <div class="col-md-4 col-xs-2">
-                                        <img class="mini-image-post"  th:src="${post.urlImage}" id="imageNews" alt="" />
+                                <td>
+                                    <div class="col-sm-2">
+                                        <img class="mini-image-post img-rounded"  th:src="${post.urlImage}" id="imageNews"/>
                                     </div>
-                                </th>
-                                <th>
-                                    <div th:fragment="href-post">
-                                        <div class=" col-sm-12">
-                                            <div th:fragment="mini-post">
-                                                <div class="caption">
-                                                    <div>
-                                                        <h3><a class="link-to-news"  th:href="@{/post/{category}/{id}(category=${post.category},id=${post.id})}" th:text="${post.title}">тут наша новость</a></h3>
-                                                    </div>
-                                                    <div>
-                                                        <p th:text="${post.description}"></p>
-                                                    </div>
-
-                                                    <span class="text-muted">Опубликовано:</span>
-                                                    <span class="text-danger" th:text="${post.datePublication}"></span>
-                                                    <span><a class="btn btn-link" th:href="@{/post/{category}/{id}(category=${post.category},id=${post.id})}">Посмотреть</a></span>
-                                                </div> 
+                                </td>
+                                <td>
+                                    <div th:fragment="mini-post">
+                                        <div class="caption">
+                                            <div>
+                                                <h3><a class="link-to-news"  th:href="@{/post/{category}/{id}(category=${post.category},id=${post.id})}" th:text="${post.title}">тут наша новость</a></h3>
                                             </div>
-                                        </div>
+                                            <div>
+                                                <p th:text="${post.description}"></p>
+                                            </div>
+
+                                            <span class="text-muted">Опубликовано:</span>
+                                            <span class="text-danger" th:if="${post.datePublication != null}" th:text="${#dates.format(post.datePublication, 'dd.MM.yyyy')}"></span>
+                                            <span><a class="btn btn-link" th:href="@{/post/{category}/{id}(category=${post.category},id=${post.id})}">Посмотреть</a></span>
+                                        </div> 
                                     </div>
-                                </th>
+                                </td>
                             </tr>
                         </table>
                     </div>
+                    
                 </div>
                 <div th:fragment="blocks">
-                    <div class="col-xs-4 col-md-3 col-lg-2" >
-
-                        <h3>Новости</h3>
-                        <div class="list-group" >
+                    <div class="col-sm-3">
+                        <h3 class="title-block">Раздел новостей</h3>
+                        <div class="list-group">
                             <a th:href="@{/}" class="list-group-item active">
                                 Последние новости
                             </a>

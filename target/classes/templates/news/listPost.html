@@ -9,7 +9,24 @@
         <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
         <div class="container screen-post">
             <div class="row">
-                <div class="col-sm-8  col-lg-8">
+                <div class="col-sm-8 well">
+                    <span class="nav-title" th:if="${categoryName !=null}">Новости по теме:</span>
+                    <span class="nav-title" th:text="${categoryName}"></span>
+                    <span class="nav-title" th:if="${categoryName == null}">Все новости</span>
+                    <div class="thumbnail" th:each="post : ${post}">    
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="col-sm-3">
+                                        <img class="mini-image-post" th:src="${post.urlImage}" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <!--/*/ <th:block th:include="index :: mini-post"></th:block> /*/-->
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                     <nav>
                         <ul class="pagination">
                             <li th:class="${page.firstPage}?'disabled':''">
@@ -34,24 +51,6 @@
                             </li>
                         </ul>
                     </nav>
-                    <div class="thumbnail  col-md-12" th:each="post : ${post}">    
-                        <table>
-                            <tr>
-                                <th>
-                                    <div class="col-md-4 col-xs-2">
-                                        <img class="mini-image-post" th:src="${post.urlImage}" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="col-sm-12">
-                                        <div class="caption">
-                                            <!--/*/ <th:block th:include="index :: mini-post"></th:block> /*/-->
-                                        </div>
-                                    </div>
-                                </th>
-                            </tr>
-                        </table>
-                    </div>
                 </div>
                 <!--/*/ <th:block th:include="index :: blocks"></th:block> /*/-->
             </div>          

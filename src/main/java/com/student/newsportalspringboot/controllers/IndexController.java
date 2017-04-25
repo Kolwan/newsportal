@@ -1,5 +1,6 @@
 package com.student.newsportalspringboot.controllers;
 
+import com.student.newsportalspringboot.entities.Category;
 import com.student.newsportalspringboot.entities.Post;
 import com.student.newsportalspringboot.repositories.CategoryRepository;
 import com.student.newsportalspringboot.repositories.PostRepository;
@@ -52,10 +53,12 @@ public class IndexController {
         ModelAndView mav = new ModelAndView();
         if (categoryRepository.existsByUrl(category)) {
             mav.setViewName("news/listPost");
+            Category c = categoryRepository.findByUrl(category);
             Page<Post> postPage = postRepository.findAllByCategory(category, pageable);
             PageWrapper<Post> page = new PageWrapper<>(postPage, "/post/" + category);
             mav.addObject("post", page.getContent());
             mav.addObject("page", page);
+            mav.addObject("categoryName",c.getName());
             mav.addObject("category", categoryRepository.findAll());
         } else {
             mav.setViewName("redirect:/post/all?page=0&size=5");

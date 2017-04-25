@@ -1,36 +1,24 @@
 html{
     position: relative;
     min-height: 100%;
+
 }
+.title-block{
+    color: #fff;
+}
+
 body{
     margin-bottom: 60px;
+    background-image: url(image/fon.jpg);
+    background-attachment: fixed;
 }
 a.link-to-news{
     font-size: 20pt;
 }
-.textarea-post{
-    min-height: 200px;
-    resize: none;
-}
-.textarea-signature{
-    resize: none;
-}
-
 .title-post{
     margin-bottom: 3%;
 }
-.image-post{
-    max-height: 100%;
-    max-width:  100%;
-    padding-bottom: 15px;
-}
-.text-post{
-    font-size: 14pt;
-    font-family: cursive;
-}
-.authorize-form{
-    margin-top: 10%;
-}
+
 .mini-image-post{
     width: 150px;
     height: 150px;
@@ -66,5 +54,8 @@ a.link-to-news{
     position: fixed;
     top: 90%;    
     left: 1%;
-    color: grey;
+    color: #fff;
+}
+.nav-title{
+    font-size: 24pt;
 }
