@@ -10,7 +10,10 @@ html{
 body{
     margin-bottom: 60px;
     background-image: url(image/fon.jpg);
+    background-repeat: no-repeat;
     background-attachment: fixed;
+    background-position:center;
+    background-size: 100%;
 }
 a.link-to-news{
     font-size: 20pt;
