@@ -10,7 +10,11 @@ html{
 body{
     margin-bottom: 60px;
     background-image: url(image/fon.jpg);
+    background-repeat: no-repeat;
     background-attachment: fixed;
+    background-position:center;
+    background-size:cover;
+
 }
 a.link-to-news{
     font-size: 20pt;
@@ -53,9 +57,11 @@ a.link-to-news{
 .button-up{
     position: fixed;
     top: 90%;    
-    left: 1%;
+    right: 2%;
     color: #fff;
 }
-.nav-title{
-    font-size: 24pt;
+@media(max-width: 768px){
+    .button-up{
+        visibility: hidden;
+    }
 }

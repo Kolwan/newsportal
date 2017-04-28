@@ -10,9 +10,11 @@
         <div class="container screen-post">
             <div class="row">
                 <div class="col-sm-8 well">
-                    <span class="nav-title" th:if="${categoryName !=null}">Новости по теме:</span>
-                    <span class="nav-title" th:text="${categoryName}"></span>
-                    <span class="nav-title" th:if="${categoryName == null}">Все новости</span>
+                    <ol class="breadcrumb">
+                        <li><a class="nav-title" th:href="@{/}">Главная</a></li>
+                        <li th:if="${categoryName !=null}" class="active" th:text="${categoryName}"></li>
+                        <li th:if="${categoryName == null}" class="active">Все новости</li>
+                    </ol>
                     <div class="thumbnail" th:each="post : ${post}">    
                         <table>
                             <tr>
@@ -58,7 +60,5 @@
         <!--/*/ <th:block th:include="index :: footer"></th:block> /*/-->
         <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>
         <script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"/>
-
-
     </body>
 </html>

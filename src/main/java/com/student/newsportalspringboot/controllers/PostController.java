@@ -1,5 +1,6 @@
 package com.student.newsportalspringboot.controllers;
 
+import com.student.newsportalspringboot.entities.Category;
 import com.student.newsportalspringboot.entities.Post;
 import com.student.newsportalspringboot.repositories.CategoryRepository;
 import com.student.newsportalspringboot.repositories.PostRepository;
@@ -29,8 +30,10 @@ public class PostController {
         ModelAndView mav = new ModelAndView("news/post");
         try {
             if (postRepository.exists(Integer.parseInt(id))) {
-                mav.addObject("post",postRepository.findOne(Integer.parseInt(id)) );
+                Category c = categoryRepository.findByUrl(category);
+                mav.addObject("post", postRepository.findOne(Integer.parseInt(id)));
                 mav.addObject("category", categoryRepository.findAll());
+                mav.addObject("categoryName",c.getName());
             } else {
                 mav.setStatus(HttpStatus.NOT_FOUND);
                 mav.setViewName("error/404");
