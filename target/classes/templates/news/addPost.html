@@ -9,9 +9,10 @@
         <div class="col-xs-4 col-sm-2">
             <!--/*/ <th:block th:include="admin :: admin-menu"></th:block> /*/-->
         </div>
-        <div class="col-sm-offset-1 col-xs-7 col-sm-6">
-            <h1 align="center">Новость</h1>
-            <form class="form-horizontal"  method="POST" th:action="@{/post/save}" th:object="${post}">
+        <div class="col-sm-offset-2 col-xs-7 col-sm-5">
+            <h1 th:if="${post.id==0}" align="center">Создание новости</h1>
+            <h1 th:if="${post.id!=0}" align="center">Редактирование новости</h1>
+            <form class="form-horizontal"  method="POST" th:action="@{/admin/post/save}" th:object="${post}">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="form-group">
                     <label>Заголовок</label>

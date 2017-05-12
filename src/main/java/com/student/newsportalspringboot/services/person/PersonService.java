@@ -19,6 +19,4 @@ public interface PersonService {
 
     Person unblockPerson(Person person);
 
-    Person saveProfile(Person person);
-
 }

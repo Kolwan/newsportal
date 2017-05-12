@@ -8,7 +8,18 @@
         <div class="col-xs-4 col-sm-2">
             <!--/*/ <th:block th:include="admin :: admin-menu"></th:block> /*/-->
         </div>
+
         <div class="col-sm-8 col-md-6" >
+            <span>Выбрать новости: </span>
+            <div class="btn-group">
+                <button th:if="${categoryPost!=null}" type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" th:text="${categoryPost.name}"><span class="caret"></span></button>
+                <button th:if="${categoryPost==null}" type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Все <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/admin/post/all}">Все</a></li>
+                    <li class="divider"></li>
+                    <li th:each="category : ${category}"><a th:href="@{/admin/post/{category}(category=${category.url})}" th:text="${category.name}"></a></li>
+                </ul>
+            </div>
             <table class="table table-hover table-condensed">
                 <thead class="thead-inverse">
                     <tr>

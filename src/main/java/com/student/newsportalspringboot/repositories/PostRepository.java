@@ -8,10 +8,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends PagingAndSortingRepository<Post, Integer> {
+public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
 
     Page<Post> findAllByCategory(String category, Pageable pageable);
 
     Set<Post> findAllByCategory(String category);
-    
+
 }

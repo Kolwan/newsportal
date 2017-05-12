@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
     <head lang="ru">   
-        <title>Управление</title> 
-        <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+        <!--/*/ <th:block th:include="admin :: head"></th:block> /*/-->
     </head>
     <body>
         <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
-        <!--/*/ <th:block th:include="admin :: admin-menu"></th:block> /*/-->
+        <div class="col-xs-4 col-sm-2">
+            <!--/*/ <th:block th:include="admin :: admin-menu"></th:block> /*/-->
+        </div>        
         <div class="col-sm-8 col-md-6" >
+            <div sec:authorize="hasRole('ROLE_SUPER_ADMIN')">
+                <ul class="nav nav-sidebar">
+                    <li>
+                        <a class="nav nav-sidebar" href="#NewAdmin" data-toggle="modal">Добавить администратора</a>
+                    </li>
+                </ul>
+            </div>
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
@@ -15,42 +23,69 @@
                         <th>Имя</th>
                         <th>Фамилия</th>
                         <th>Не заблокирован</th>
-                        <th  th:if="${visible == true}">Управление</th> 
                         <th sec:authorize="hasRole('ROLE_SUPER_ADMIN')">Дополнительно</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="person : ${person}">
-                        <td><a class=" btn-link"  th:href="@{/user/{id}(id=${person.id})}" th:text="${person.email}"></a></td>
+                        <td th:text="${person.email}"></td>
                         <td th:text="${person.name}"></td>
                         <td th:text="${person.surname}"></td>                       
                         <td th:text="${person.nonLocked}"></td>
-                        <td  th:if="${visible == true}"> 
-                            <div class="btn-group">
+                        <td sec:authorize="hasRole('ROLE_SUPER_ADMIN')">
+                            <div  class="btn-group">
                                 <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-gear"></i> <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    <li th:if="${person.nonLocked == true}"><a th:href="@{/admin/person/{id}/blocked(id=${person.id})'}">Заблокировать</a></li>
-                                    <li th:if="${person.nonLocked == false}"><a th:href="@{/admin/person/{id}/unblocked(id=${person.id})'}">Разблокировать</a></li>    
-                                </ul>
-                            </div>
-                        </td>
-                        <td sec:authorize="hasRole('ROLE_SUPER_ADMIN')">
-                            <div th:if="${person.rolePerson.equals('ROLE_USER')}" class="btn-group">
-                                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-user-plus"></i> <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li><a th:href="@{/admin/person/admins/new/{id}(id=${person.id})}">Сделать администратором</a></li>
-                                </ul>
-                            </div>
-                            <div th:if="${person.rolePerson.equals('ROLE_ADMIN') or person.rolePerson.equals('ROLE_SUPER_ADMIN')}" class="btn-group">
-                                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-user-times"></i> <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li><a th:href="@{/admin/person/admin/delete/{id}(id=${person.id})}">Снять полномочия</a></li>
+                                    <li th:if="${person.nonLocked == true}"><a th:href="@{/admin/person/settings/{id}/blocked(id=${person.id})}">Заблокировать</a></li>
+                                    <li th:if="${person.nonLocked == false}"><a th:href="@{/admin/person/settings/{id}/unblocked(id=${person.id})}">Разблокировать</a></li>    
+                                    <li><a th:href="@{/admin/person/settings/{id}/delete(id=${person.id})}">Удалить</a></li>
                                 </ul>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table> 
+            <div sec:authorize="hasRole('ROLE_SUPER_ADMIN')"  id="NewAdmin" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                            <h4 class="modal-title">Добавление администратора</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="col-md-offset-3 col-md-6">
+                                <form class="form-horizontal"  method="POST" th:action="@{/admin/person}" th:object="${admin}">
+                                    <div class="form-group">
+                                        <p class="text-left">Имя</p>
+                                        <input class="form-control" type="text" th:field="*{name}" required="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <p class="text-left">Фамилия</p>
+                                        <input class="form-control" type="text" th:field="*{surname}" required="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <p class="text-left">email</p>
+                                        <input class="form-control" type="email" th:field="*{email}" required="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <p class="text-left">Пароль</p>
+                                        <input class="form-control" type="password" th:field="*{password}" required="" />
+                                    </div>
+                                    <div class="btn btn-group-justified">
+
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-success">Сохранить</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!--/*/ <th:block th:include="index :: footer"></th:block> /*/-->
         <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"/>

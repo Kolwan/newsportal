@@ -31,7 +31,6 @@
                                                 <b class="caret"></b>
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li sec:authorize="hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')"><a th:href="@{/user}">Профиль</a></li>
                                                 <li sec:authorize="hasRole('ROLE_ADMIN') OR hasRole('SUPER_ADMIN')">
                                                     <a th:href="@{/admin}">Администрирование</a>
                                                 </li>
@@ -93,8 +92,8 @@
                             <a th:href="@{/}" class="list-group-item active">
                                 Последние новости
                             </a>
-                            <a th:each="category : ${category}" class="list-group-item" th:href="@{/post/{category}(category=${category.url},page=0,size=5)}"><span th:text="${category.name}"></span></a>
-                            <a class="list-group-item" th:href="@{/post/all(page=0,size=5)}">Все</a> 
+                            <a th:each="category : ${category}" class="list-group-item" th:href="@{/post/{category}(category=${category.url})}"><span th:text="${category.name}"></span></a>
+                            <a class="list-group-item" th:href="@{/post}">Все</a> 
                         </div>
                     </div>
                 </div>

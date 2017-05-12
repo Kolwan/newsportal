@@ -4,13 +4,15 @@ import com.student.newsportalspringboot.entities.Category;
 import com.student.newsportalspringboot.entities.Post;
 import com.student.newsportalspringboot.repositories.CategoryRepository;
 import com.student.newsportalspringboot.repositories.PostRepository;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -18,6 +20,12 @@ public class PostController {
 
     private PostRepository postRepository;
     private CategoryRepository categoryRepository;
+    private ModelAndView mav;
+    private Category c;
+    private PageRequest pageRequest;
+    private Page<Post> page;
+    private final int MAX_SIZE_PAGES = 5;
+    private final Sort sort = new Sort(Sort.Direction.DESC, "datePublication");
 
     @Autowired
     public void setRepository(PostRepository postRepository, CategoryRepository categoryRepository) {
@@ -25,15 +33,25 @@ public class PostController {
         this.postRepository = postRepository;
     }
 
-    @RequestMapping("/post/{category}/{id}")
+    @GetMapping("post")
+    public String post() {
+        return "redirect:/post/page/1";
+    }
+
+    @RequestMapping("post/{category}")
+    public String postByCategory(@PathVariable String category) {
+        return "redirect:/post/{category}/page/1";
+    }
+
+    @GetMapping("/post/{category}/{id}")
     public ModelAndView showPost(@PathVariable String id, @PathVariable String category) {
-        ModelAndView mav = new ModelAndView("news/post");
+        mav = new ModelAndView("news/post");
         try {
-            if (postRepository.exists(Integer.parseInt(id))) {
-                Category c = categoryRepository.findByUrl(category);
-                mav.addObject("post", postRepository.findOne(Integer.parseInt(id)));
+            if (postRepository.exists(Long.parseLong(id))) {
+                c = categoryRepository.findByUrl(category);
+                mav.addObject("post", postRepository.findOne(Long.parseLong(id)));
                 mav.addObject("category", categoryRepository.findAll());
-                mav.addObject("categoryName",c.getName());
+                mav.addObject("categoryName", c.getName());
             } else {
                 mav.setStatus(HttpStatus.NOT_FOUND);
                 mav.setViewName("error/404");
@@ -45,38 +63,49 @@ public class PostController {
         return mav;
     }
 
-    @RequestMapping("admin/post/{category}/{id}/alter")
-    public ModelAndView editPost(@PathVariable Integer id, @PathVariable String category) {
-        ModelAndView mav = new ModelAndView("news/addPost");
-        mav.addObject("post", postRepository.findOne(id));
-        mav.addObject("category", categoryRepository.findAll());
+    @GetMapping("post/page/{numberPage}")
+    public ModelAndView showAllPost(@PathVariable String numberPage) {
+        mav = new ModelAndView("news/listPost");
+        try {
+            pageRequest = new PageRequest(Integer.parseInt(numberPage) - 1, MAX_SIZE_PAGES, sort);
+            page = postRepository.findAll(pageRequest);
+            if (page.getTotalPages() < Integer.parseInt(numberPage)) {
+                mav.setViewName("redirect:/");
+                return mav;
+            }
+            mav.addObject("post", page.getContent());
+            mav.addObject("page", page);
+            mav.addObject("category", categoryRepository.findAll());
+        } catch (Exception e) {
+            mav.setViewName("redirect:/post/page/1");
+            return mav;
+        }
         return mav;
     }
 
-    @RequestMapping("admin/post/new")
-    public ModelAndView newPost() {
-        ModelAndView mav = new ModelAndView("news/addPost");
-        mav.addObject("post", new Post());
-        mav.addObject("category", categoryRepository.findAll());
+    @GetMapping("post/{category}/page/{numberPage}")
+    public ModelAndView showPostByCategory(@PathVariable String category, @PathVariable String numberPage) {
+        mav = new ModelAndView("news/listPost");
+        if (categoryRepository.existsByUrl(category)) {
+            Category c = categoryRepository.findByUrl(category);
+            try {
+                pageRequest = new PageRequest(Integer.parseInt(numberPage) - 1, MAX_SIZE_PAGES, sort);
+                page = postRepository.findAllByCategory(c.getUrl(), pageRequest);
+                if (page.getTotalPages() < Integer.parseInt(numberPage)) {
+                    mav.setViewName("redirect:/post/page/1");
+                    return mav;
+                }
+                mav.addObject("post", page.getContent());
+                mav.addObject("page", page);
+                mav.addObject("categoryName", c.getName());
+                mav.addObject("category", categoryRepository.findAll());
+            } catch (Exception e) {
+                mav.setViewName("redirect:/post/" + c.getUrl() + "/page/1");
+                return mav;
+            }
+        } else {
+            mav.setViewName("redirect:/post/page/1");
+        }
         return mav;
-    }
-
-    @PostMapping("post/save")
-    public String savePost(Post post) {
-        if (postRepository.findOne(post.getId()) != null) {
-            Post news = postRepository.findOne(post.getId());
-            post.setDatePublication(news.getDatePublication());
-        }
-        if (post.getDatePublication() == null) {
-            post.setDatePublication(new Date());
-        }
-        postRepository.save(post);
-        return "redirect:/post/" + post.getCategory() + "/" + post.getId();
-    }
-
-    @RequestMapping("admin/post/{category}/{id}/delete")
-    public String delete(@PathVariable Integer id) {
-        postRepository.delete(id);
-        return "redirect:/admin/post/list/all";
     }
 }

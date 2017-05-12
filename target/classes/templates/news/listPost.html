@@ -31,27 +31,49 @@
                     </div>
                     <nav>
                         <ul class="pagination">
-                            <li th:class="${page.firstPage}?'disabled':''">
-                                <span th:if='${page.firstPage}'><i class="fa fa-angle-double-left"></i></span>
-                                <a th:if='${not page.firstPage}' th:href='@{${page.url}(page=0,size=${page.size})}'><i class="fa fa-angle-double-left"></i></a>
+                            <li th:class="${page.isFirst()}?'disabled':''">
+                                <span th:if='${page.isFirst()}'><i class="fa fa-angle-double-left"></i></span>
+                                <a th:if="${not page.isFirst()}"  th:href="@{1}"><i class="fa fa-angle-double-left"></i></a>
                             </li>
-                            <li th:class="${page.hasPreviousPage}? '' : 'disabled'">
-                                <span th:if='${not page.hasPreviousPage}'><i class="fa fa-angle-left"></i></span>
-                                <a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page=${page.number-2},size=${page.size})}' title='Go to previous page'><i class="fa fa-angle-left"></i></a>
+                            <li th:class="${page.hasPrevious()}? '' : 'disabled'">
+                                <span th:if="${not page.hasPrevious()}"><i class="fa fa-angle-left"></i></span>
+                                <a th:if="${page.hasPrevious()}" th:href="@{{pagePrevious}(pagePrevious=${page.getNumber()})}" title="К предыдущей странице"><i class="fa fa-angle-left"></i></a>
                             </li>
-                            <li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''">
-                                <span th:if='${item.current}' th:text='${item.number}'>1</span>
-                                <a th:if='${not item.current}' th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'><span th:text='${item.number}'>1</span></a>
+
+                            <li th:if="${page.getTotalPages()&lt;=5}" th:each="numberPage : ${#numbers.sequence(1,page.getTotalPages())}" th:class="${numberPage==page.getNumber()+1}? 'active' : ''">
+                                <span th:if="${numberPage==page.getNumber()+1}" th:text="${numberPage}"></span>
+                                <a th:if="${numberPage!=page.getNumber()+1}" th:href="@{{page}(page=${numberPage})}"><span th:text="${numberPage}"></span></a>
                             </li>
-                            <li th:class="${page.hasNextPage}? '' : 'disabled'">
-                                <span th:if='${not page.hasNextPage}'><i class="fa fa-angle-right"></i></span>
-                                <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page=${page.number},size=${page.size})}' title='Go to next page'><i class="fa fa-angle-right"></i></a>
+
+
+                            <li th:if="${page.getTotalPages()&gt;5 and page.getNumber()&gt;1 and page.getTotalPages()&gt;page.getNumber()+2}" th:each='numberPage : ${#numbers.sequence(page.getNumber()-1,page.getNumber()+3)}' th:class="${numberPage==page.getNumber()+1}? 'active' : ''">
+                                <span th:if="${numberPage==page.getNumber()+1}" th:text="${numberPage}"></span>
+                                <a th:if="${numberPage!=page.getNumber()+1}" th:href="@{{page}(page=${numberPage})}"><span th:text="${numberPage}"></span></a>
                             </li>
-                            <li th:class="${page.lastPage}? 'disabled' : ''">
-                                <span th:if='${page.lastPage}'><i class="fa fa-angle-double-right"></i></span>
-                                <a th:if='${not page.lastPage}' th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'><i class="fa fa-angle-double-right"></i></a>
+
+
+                            <li th:if="${page.getTotalPages()&gt; 5 and page.getNumber()&gt;page.getTotalPages()-3}" th:each="numberPage : ${#numbers.sequence(page.getTotalPages()-4,page.getTotalPages())}" th:class="${numberPage==page.getNumber()+1}? 'active' : ''">
+                                <span th:if="${numberPage==page.getNumber()+1}" th:text="${numberPage}"></span>
+                                <a th:if="${numberPage!=page.getNumber()+1}" th:href="@{{page}(page=${numberPage})}"><span th:text="${numberPage}"></span></a>
+                            </li>
+
+
+                            <li th:if="${page.getNumber()&lt;2 and page.getTotalPages()&gt;5}" th:each="numberPage : ${#numbers.sequence(1,5)}" th:class="${numberPage==page.getNumber()+1}? 'active' : ''">
+                                <span th:if="${numberPage==page.getNumber()+1}" th:text="${numberPage}"></span>
+                                <a th:if="${numberPage!=page.getNumber()+1}" th:href="@{{page}(page=${numberPage})}"><span th:text="${numberPage}"></span></a>
+                            </li>
+
+                            <li th:class="${page.hasNext()}? '' : 'disabled'">
+                                <span th:if="${not page.hasNext()}"><i class="fa fa-angle-right"></i></span>
+                                <a th:if="${page.hasNext()}" th:href="@{{pagePrevious}(pagePrevious=${page.getNumber()+2})}" title="К следующей странице"><i class="fa fa-angle-right"></i></a>
+                            </li>
+
+                            <li th:class="${page.isLast()}? 'disabled' : ''">
+                                <span th:if="${page.isLast()}"><i class="fa fa-angle-double-right"></i></span>
+                                <a th:if="${not page.isLast()}" th:href="@{{pageEnd}(pageEnd=${page.getTotalPages()})}"><i class="fa fa-angle-double-right"></i></a>
                             </li>
                         </ul>
+
                     </nav>
                 </div>
                 <!--/*/ <th:block th:include="index :: blocks"></th:block> /*/-->

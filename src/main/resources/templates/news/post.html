@@ -33,7 +33,7 @@
                     </div>
                     <ol class="breadcrumb">
                         <li><a th:href="@{/}">Главная</a></li>
-                        <li><a th:href="@{/post/{category}(category=${post.category},page=0,size=5)}" th:text="${categoryName}"></a></li>
+                        <li><a th:href="@{/post/{category}(category=${post.category})}" th:text="${categoryName}"></a></li>
                         <li class="active" th:text="${post.title}"></li>
                     </ol>
                     <h1 th:text="${post.title}" class="title-post text-center">Name</h1>

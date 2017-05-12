@@ -11,26 +11,25 @@ import org.hibernate.validator.constraints.URL;
 @Table(name = "news")
 public class Post implements Serializable {
 
-    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")
-    private int id;
+    private long id;
 
     @NotBlank
     private String title;
 
     @NotBlank
     private String description;
-
+    @NotBlank
     private String category;
 
     @URL
     private String urlImage;
 
-    @Size(max = 1000000)
+    @Column(columnDefinition = "text")
     private String body;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date datePublication;
 
@@ -50,11 +49,11 @@ public class Post implements Serializable {
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -89,8 +88,6 @@ public class Post implements Serializable {
     public void setDatePublication(Date datePublication) {
         this.datePublication = datePublication;
     }
-
-   
 
     @Override
     public String toString() {

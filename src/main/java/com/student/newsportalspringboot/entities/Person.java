@@ -19,10 +19,6 @@ public class Person implements Serializable {
 
     private String email;
 
-    private String urlImage;
-
-    private String signature;
-
     private String rolePerson;
 
     private boolean nonLocked;
@@ -67,22 +63,6 @@ public class Person implements Serializable {
         this.email = email;
     }
 
-    public String getUrlImage() {
-        return urlImage;
-    }
-
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
     public String getRolePerson() {
         return rolePerson;
     }
@@ -101,7 +81,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Person{" + "id=" + id + ", name=" + name + ", surname=" + surname + ", password=" + password + ", email=" + email + ", urlImage=" + urlImage + ", signature=" + signature + ", rolePerson=" + rolePerson + ", nonLocked=" + nonLocked + '}';
+        return "Person{" + "id=" + id + ", name=" + name + ", surname=" + surname + ", password=" + password + ", email=" + email + ", rolePerson=" + rolePerson + ", nonLocked=" + nonLocked + '}';
     }
 
 }

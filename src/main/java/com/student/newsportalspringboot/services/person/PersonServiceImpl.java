@@ -34,13 +34,10 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person saveProfile(Person person) {
-        return personRepository.save(person);
-    }
-
-    @Override
     public Person saveAdmin(Admin admin) {
         Person person = new Person();
+        person.setName(admin.getName());
+        person.setSurname(admin.getSurname());
         person.setEmail(admin.getEmail());
         person.setPassword(passwordEncoder.encode(admin.getPassword()));
         person.setNonLocked(true);
