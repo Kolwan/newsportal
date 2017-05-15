@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -30,7 +31,9 @@ public class AdminController {
     private CategoryRepository categoryRepository;
     private ModelAndView mav;
     private Person person;
-    private final int MAX_SIZE_PAGES = 50;
+    private Page<Post> page;
+    private final Sort sort = new Sort(Sort.Direction.DESC, "datePublication");
+    private final int MAX_SIZE_PAGES = 100;
 
     @Value("${default.user.name}")
     private String name;
@@ -52,7 +55,7 @@ public class AdminController {
     }
 
     @GetMapping("admin/person")
-    public ModelAndView showPersons() {
+    public ModelAndView showAdmins() {
         mav = new ModelAndView("admin/listPerson");
         mav.addObject("admin", new Admin());
         mav.addObject("category", categoryRepository.findAll());
@@ -60,18 +63,10 @@ public class AdminController {
         return mav;
     }
 
-    @RequestMapping("admin/category")
-    public ModelAndView getCategory() {
-        mav = new ModelAndView("admin/listCategory");
-        mav.addObject("category", new Category());
-        mav.addObject("categories", categoryRepository.findAll());
-        return mav;
-    }
-
     @PostMapping("admin/person")
     public String saveAdmin(@Valid Admin admin) {
         if (admin.getEmail().equals(name)) {
-            return "redirect:/admin/person";
+            return "redirect:/admin/persons";
         }
         personService.saveAdmin(admin);
         return "redirect:/admin/person";
@@ -97,22 +92,10 @@ public class AdminController {
         return "redirect:/admin/person";
     }
 
-    @PostMapping("admin/category")
-    public String SaveCategory(Category category) {
-        categoryRepository.save(category);
-        return "redirect:/admin/category";
-    }
-
-    @RequestMapping("admin/category/{id}/delete")
-    public String deleteCategory(@PathVariable Integer id) {
-        categoryRepository.delete(id);
-        return "redirect:/admin/category";
-    }
-
     @GetMapping("admin/post/all")
-    public ModelAndView getAllPost(@PageableDefault(size = MAX_SIZE_PAGES, sort = "datePublication", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ModelAndView getAllPost() {
         mav = new ModelAndView("admin/listPost");
-        Page<Post> page = postRepository.findAll(pageable);
+        page = postRepository.findAll(new PageRequest(0, MAX_SIZE_PAGES,sort));
         mav.addObject("post", page.getContent());
         mav.addObject("page", page);
         mav.addObject("category", categoryRepository.findAll());
@@ -120,20 +103,12 @@ public class AdminController {
     }
 
     @GetMapping("admin/post/{category}")
-    public ModelAndView getPostByCategory(@PathVariable String category, @PageableDefault(size = MAX_SIZE_PAGES, sort = "datePublication", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ModelAndView getAllPostByCategory(@PathVariable String category) {
         mav = new ModelAndView("admin/listPost");
-        Page<Post> page = postRepository.findAllByCategory(category, pageable);
+        page = postRepository.findAllByCategory(category, new PageRequest(0, MAX_SIZE_PAGES,sort));
         mav.addObject("post", page.getContent());
         mav.addObject("page", page);
         mav.addObject("categoryPost", categoryRepository.findByUrl(category));
-        mav.addObject("category", categoryRepository.findAll());
-        return mav;
-    }
-
-    @RequestMapping("admin/post/{category}/{id}/alter")
-    public ModelAndView editPost(@PathVariable Long id, @PathVariable String category) {
-        mav = new ModelAndView("news/addPost");
-        mav.addObject("post", postRepository.findOne(id));
         mav.addObject("category", categoryRepository.findAll());
         return mav;
     }
@@ -142,6 +117,14 @@ public class AdminController {
     public ModelAndView newPost() {
         mav = new ModelAndView("news/addPost");
         mav.addObject("post", new Post());
+        mav.addObject("category", categoryRepository.findAll());
+        return mav;
+    }
+
+    @RequestMapping("admin/post/{category}/{id}/alter")
+    public ModelAndView editPost(@PathVariable Long id, @PathVariable String category) {
+        mav = new ModelAndView("news/addPost");
+        mav.addObject("post", postRepository.findOne(id));
         mav.addObject("category", categoryRepository.findAll());
         return mav;
     }
@@ -163,6 +146,26 @@ public class AdminController {
     @RequestMapping("admin/post/{category}/{id}/delete")
     public String deletePost(@PathVariable Long id) {
         postRepository.delete(id);
-        return "redirect:/admin/post/list/all";
+        return "redirect:/admin/post/all";
+    }
+
+    @RequestMapping("admin/category")
+    public ModelAndView getCategory() {
+        mav = new ModelAndView("admin/listCategory");
+        mav.addObject("category", new Category());
+        mav.addObject("categories", categoryRepository.findAll());
+        return mav;
+    }
+
+    @PostMapping("admin/category")
+    public String SaveCategory(Category category) {
+        categoryRepository.save(category);
+        return "redirect:/admin/category";
+    }
+
+    @RequestMapping("admin/category/{id}/delete")
+    public String deleteCategory(@PathVariable Integer id) {
+        categoryRepository.delete(id);
+        return "redirect:/admin/category";
     }
 }

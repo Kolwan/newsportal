@@ -29,7 +29,7 @@
                             </tr>
                         </table>
                     </div>
-                    <nav>
+                    <nav class="text-center">
                         <ul class="pagination">
                             <li th:class="${page.isFirst()}?'disabled':''">
                                 <span th:if='${page.isFirst()}'><i class="fa fa-angle-double-left"></i></span>
@@ -73,7 +73,6 @@
                                 <a th:if="${not page.isLast()}" th:href="@{{pageEnd}(pageEnd=${page.getTotalPages()})}"><i class="fa fa-angle-double-right"></i></a>
                             </li>
                         </ul>
-
                     </nav>
                 </div>
                 <!--/*/ <th:block th:include="index :: blocks"></th:block> /*/-->

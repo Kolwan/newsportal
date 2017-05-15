@@ -8,6 +8,7 @@ html{
 }
 
 body{
+    padding-top: 70px;
     margin-bottom: 60px;
     background-image: url(image/fon.jpg);
     background-repeat: no-repeat;

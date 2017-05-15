@@ -22,7 +22,6 @@ public class PostController {
     private CategoryRepository categoryRepository;
     private ModelAndView mav;
     private Category c;
-    private PageRequest pageRequest;
     private Page<Post> page;
     private final int MAX_SIZE_PAGES = 5;
     private final Sort sort = new Sort(Sort.Direction.DESC, "datePublication");
@@ -67,16 +66,19 @@ public class PostController {
     public ModelAndView showAllPost(@PathVariable String numberPage) {
         mav = new ModelAndView("news/listPost");
         try {
-            pageRequest = new PageRequest(Integer.parseInt(numberPage) - 1, MAX_SIZE_PAGES, sort);
-            page = postRepository.findAll(pageRequest);
-            if (page.getTotalPages() < Integer.parseInt(numberPage)) {
+            if (Integer.parseInt(numberPage) <= 0) {
+                mav.setViewName("redirect:/post/page/1");
+                return mav;
+            }
+            page = postRepository.findAll(new PageRequest(Integer.parseInt(numberPage) - 1, MAX_SIZE_PAGES, sort));
+            if (!page.hasContent()) {
                 mav.setViewName("redirect:/");
                 return mav;
             }
             mav.addObject("post", page.getContent());
             mav.addObject("page", page);
             mav.addObject("category", categoryRepository.findAll());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             mav.setViewName("redirect:/post/page/1");
             return mav;
         }
@@ -87,11 +89,14 @@ public class PostController {
     public ModelAndView showPostByCategory(@PathVariable String category, @PathVariable String numberPage) {
         mav = new ModelAndView("news/listPost");
         if (categoryRepository.existsByUrl(category)) {
-            Category c = categoryRepository.findByUrl(category);
+            c = categoryRepository.findByUrl(category);
             try {
-                pageRequest = new PageRequest(Integer.parseInt(numberPage) - 1, MAX_SIZE_PAGES, sort);
-                page = postRepository.findAllByCategory(c.getUrl(), pageRequest);
-                if (page.getTotalPages() < Integer.parseInt(numberPage)) {
+                if (Integer.parseInt(numberPage) <= 0) {
+                    mav.setViewName("redirect:/post/" + category + "/page/1");
+                    return mav;
+                }
+                page = postRepository.findAllByCategory(c.getUrl(), new PageRequest(Integer.parseInt(numberPage) - 1, MAX_SIZE_PAGES, sort));
+                if (!page.hasContent()) {
                     mav.setViewName("redirect:/post/page/1");
                     return mav;
                 }
@@ -99,8 +104,8 @@ public class PostController {
                 mav.addObject("page", page);
                 mav.addObject("categoryName", c.getName());
                 mav.addObject("category", categoryRepository.findAll());
-            } catch (Exception e) {
-                mav.setViewName("redirect:/post/" + c.getUrl() + "/page/1");
+            } catch (NumberFormatException e) {
+                mav.setViewName("redirect:/post/" + category + "/page/1");
                 return mav;
             }
         } else {

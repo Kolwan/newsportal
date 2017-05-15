@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head th:fragment="head" lang="ru">
-        <title>Добро пожаловать</title>
+        <title>Новости</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet"  th:href="@{/css/style.css}"/>
         <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
@@ -10,46 +10,53 @@
     </head>
     <body>
         <div th:fragment="navbar">
-            <div id="header" class="navbar navbar-inverse navbar-static-top">
+            <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container">
-                    <div class="navbar-header" >                           
-                        <a th:href="@{/}" class="navbar-brand">Новостной портал</a>
+                    <div class="navbar-header" > 
+                        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="http://ooo.technology/" class="navbar-brand">Технология</a>
                     </div>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li> 
-                            <div sec:authorize="isAnonymous()">
-                                <a class="btn btn-primary navbar-btn" th:href="@{/login}">
+                    <div id="navbarCollapse" class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="/">Новости</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li sec:authorize="isAnonymous()"> 
+                                <a th:href="@{/login}">
                                     <i class="fa fa-sign-in"></i> Войти</a>  
-                            </div>
-                        </li>
-                        <li>
-                            <div sec:authorize="isAuthenticated()">
-                                <form class="navbar-form navbar-left" th:action="@{/logout}" method="post">      
-                                    <ul class="nav nav-pills">
-                                        <li class="dropdown">
-                                            <a href="#" data-toggle="dropdown" class="dropdown-toggle" sec:authentication="name">
-                                                <b class="caret"></b>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <li sec:authorize="hasRole('ROLE_ADMIN') OR hasRole('SUPER_ADMIN')">
-                                                    <a th:href="@{/admin}">Администрирование</a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                <li><div class="btn-group-justified">
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-default" type="submit">Выйти</button>
+                            </li>
+                            <li>
+                                <div sec:authorize="isAuthenticated()">
+                                    <form class="navbar-form navbar-left" th:action="@{/logout}" method="post">      
+                                        <ul class="nav">
+                                            <li class="dropdown">
+                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#" sec:authentication="name"><b class="caret"></b></a>
+                                                <ul class="dropdown-menu">
+                                                    <li sec:authorize="hasRole('ROLE_ADMIN') OR hasRole('SUPER_ADMIN')">
+                                                        <a th:href="@{/admin}">Администрирование</a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li><div class="btn-group-justified">
+                                                            <div class="btn-group">
+                                                                <button class="btn btn-default" type="submit">Выйти</button>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </li>                         
-                                    </ul>
-                                </form>              
-                            </div>
-                        </li>
-                    </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>                         
+                                        </ul>
+                                    </form>              
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>            
+            </nav>
         </div>
         <!--Внутренняя структура-->
         <div class="container screen-post">
@@ -83,7 +90,6 @@
                             </tr>
                         </table>
                     </div>
-                    
                 </div>
                 <div th:fragment="blocks">
                     <div class="col-sm-3">
@@ -103,7 +109,11 @@
             <div class="footer">
                 <div class="container footer-text">
                     <div class="row">
-                        <p>© 2017 Новостной портал </p>
+                        <span>©</span>
+                        <span>2017</span>
+                        <span th:if="${#dates.format(#dates.createNow(),'yyyy')}>2017"> - </span>
+                        <span th:if="${#dates.format(#dates.createNow(),'yyyy')}>2017" th:text="${#dates.format(#dates.createNow(), 'yyyy')}"> - </span>
+                        <span>Новостной портал компании ООО "Технология".</span>
                     </div>
                 </div>
             </div>

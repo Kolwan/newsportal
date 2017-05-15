@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
     <head lang="ru">
-        <title>Новость</title>
+        <title th:if="${post.id==0}">Создание</title>
+        <title th:if="${post.id!=0}">Редактирование</title>
         <!--/*/ <th:block th:include="admin :: head"></th:block> /*/-->
     </head>
     <body>
-        <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
+        <!--/*/ <th:block th:include="admin :: navbar"></th:block> /*/-->
         <div class="col-xs-4 col-sm-2">
             <!--/*/ <th:block th:include="admin :: admin-menu"></th:block> /*/-->
         </div>

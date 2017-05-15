@@ -2,6 +2,9 @@ html{
     position: relative;
     min-height: 100%;
 }
+body{
+    padding-top: 70px;
+}
 .footer{    
     position: absolute;
     top: 100%;    
