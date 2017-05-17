@@ -16,10 +16,10 @@ public class Admin implements Serializable {
     @Size(min = 6, message = "Пароль должен быть более 6 символов")
     private String password;
 
-    @Max(value = 25)
+    @Size(max = 25)
     private String name;
 
-    @Max(value = 40)
+    @Size(max = 40)
     private String surname;
 
     public String getEmail() {
