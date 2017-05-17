@@ -21,9 +21,14 @@ a.link-to-news{
     font-size: 20pt;
 }
 
-.mini-image-post{
+.mini-image-post-d{
     width: 150px;
     height: 150px;
+}
+.mini-image-post{
+    height: 150px;
+    width: 150px;
+
 }
 @media (min-width: 1510px)
 {
@@ -49,7 +54,7 @@ a.link-to-news{
 
 }
 .footer-text{
-    padding: 15px;
+    padding-top: 15px;
     color: #fff;
 }
 .button-up{
