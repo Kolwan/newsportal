@@ -3,9 +3,10 @@
     <head lang="ru">     
         <title th:text="${post.title}">Название</title> 
         <!--/*/ <th:block th:include="index :: head"></th:block> /*/-->
+        <link rel="stylesheet"  th:href="@{/css/post.css}"/>
     </head>
     <body>
-        
+
         <!--/*/ <th:block th:include="index :: navbar"></th:block> /*/-->
         <div class="container screen-post">
             <div class="row">

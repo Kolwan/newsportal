@@ -18,5 +18,7 @@ public interface PersonService {
     Person blockPerson(Person person);
 
     Person unblockPerson(Person person);
+    
+    boolean existsUserByEmail(String email);
 
 }

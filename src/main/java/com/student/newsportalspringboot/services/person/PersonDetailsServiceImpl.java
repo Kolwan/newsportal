@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersonDetailsServiceImpl implements UserDetailsService {
 
     private PersonService personService;
+    private Person user;
+    private GrantedAuthority authority;
+    private UserDetails userDetails;
 
     @Autowired
     public void setService(PersonService personService) {
@@ -26,11 +29,13 @@ public class PersonDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Person user = personService.findPersonByEmail(email);
-
-        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRolePerson());
-        UserDetails userDetails = (UserDetails) new User(user.getEmail(),
-                user.getPassword(), true, true, true, user.isNonLocked(), Arrays.asList(authority));
+        if (personService.existsUserByEmail(email)) {
+            user = personService.findPersonByEmail(email);
+            authority = new SimpleGrantedAuthority(user.getRolePerson());
+            userDetails = new User(user.getEmail(), user.getPassword(), true, true, true, user.isNonLocked(), Arrays.asList(authority));
+            return userDetails;
+        }
+        userDetails = new User("user", "123", false, false, false, false, Arrays.asList(new SimpleGrantedAuthority("user")));
         return userDetails;
     }
 

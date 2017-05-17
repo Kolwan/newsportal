@@ -46,7 +46,7 @@ public class PostController {
     public ModelAndView showPost(@PathVariable String id, @PathVariable String category) {
         mav = new ModelAndView("news/post");
         try {
-            if (!categoryRepository.existsByUrl(category)){
+            if (!categoryRepository.existsByUrl(category)) {
                 mav.setStatus(HttpStatus.NOT_FOUND);
                 mav.setViewName("error/404");
                 return mav;

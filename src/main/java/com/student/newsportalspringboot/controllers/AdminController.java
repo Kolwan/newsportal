@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +29,7 @@ public class AdminController {
     private CategoryRepository categoryRepository;
     private ModelAndView mav;
     private Person person;
+    private Post news;
     private Page<Post> page;
     private final Sort sort = new Sort(Sort.Direction.DESC, "datePublication");
     private final int MAX_SIZE_PAGES = 100;
@@ -65,10 +64,9 @@ public class AdminController {
 
     @PostMapping("admin/person")
     public String saveAdmin(@Valid Admin admin) {
-        if (admin.getEmail().equals(name)) {
-            return "redirect:/admin/persons";
+        if (!admin.getEmail().equals(name)) {
+            personService.saveAdmin(admin);
         }
-        personService.saveAdmin(admin);
         return "redirect:/admin/person";
     }
 
@@ -95,7 +93,7 @@ public class AdminController {
     @GetMapping("admin/post/all")
     public ModelAndView getAllPost() {
         mav = new ModelAndView("admin/listPost");
-        page = postRepository.findAll(new PageRequest(0, MAX_SIZE_PAGES,sort));
+        page = postRepository.findAll(new PageRequest(0, MAX_SIZE_PAGES, sort));
         mav.addObject("post", page.getContent());
         mav.addObject("page", page);
         mav.addObject("category", categoryRepository.findAll());
@@ -105,7 +103,7 @@ public class AdminController {
     @GetMapping("admin/post/{category}")
     public ModelAndView getAllPostByCategory(@PathVariable String category) {
         mav = new ModelAndView("admin/listPost");
-        page = postRepository.findAllByCategory(category, new PageRequest(0, MAX_SIZE_PAGES,sort));
+        page = postRepository.findAllByCategory(category, new PageRequest(0, MAX_SIZE_PAGES, sort));
         mav.addObject("post", page.getContent());
         mav.addObject("page", page);
         mav.addObject("categoryPost", categoryRepository.findByUrl(category));
@@ -131,13 +129,12 @@ public class AdminController {
 
     @PostMapping("admin/post/save")
     public String savePost(Post post) {
-
-        if (postRepository.findOne(post.getId()) != null) {
-            Post news = postRepository.findOne(post.getId());
-            post.setDatePublication(news.getDatePublication());
-        }
         if (post.getDatePublication() == null) {
             post.setDatePublication(new Date());
+        }
+        if (postRepository.exists(post.getId())) {
+            news = postRepository.findOne(post.getId());
+            post.setDatePublication(news.getDatePublication());
         }
         postRepository.save(post);
         return "redirect:/post/" + post.getCategory() + "/" + post.getId();

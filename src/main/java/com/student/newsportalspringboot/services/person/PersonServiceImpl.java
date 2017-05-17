@@ -18,7 +18,7 @@ public class PersonServiceImpl implements PersonService {
     private final String roleAdmin = "ROLE_ADMIN";
 
     @Autowired
-    public void set(PersonRepository personRepository) {
+    public void setRepository(PersonRepository personRepository) {
         this.personRepository = personRepository;
 
     }
@@ -67,6 +67,11 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person findPersonByEmail(String email) {
         return personRepository.findByEmail(email);
+    }
+
+    @Override
+    public boolean existsUserByEmail(String email) {
+        return personRepository.existsByEmail(email);
     }
 
 }
