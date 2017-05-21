@@ -2,13 +2,19 @@ package com.student.newsportalspringboot.entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class Admin implements Serializable {
-
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Email
     @Column(nullable = false, unique = true)
     @NotBlank
@@ -52,6 +58,14 @@ public class Admin implements Serializable {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }
