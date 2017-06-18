@@ -9,6 +9,7 @@ public class Person implements Serializable {
 
     @Id
     @Column(name = "person_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String name;
