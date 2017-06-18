@@ -55,6 +55,7 @@
                         <div class="modal-footer">
                             <div class="col-md-offset-3 col-md-6">
                                 <form class="form-horizontal"  method="POST" th:action="@{/admin/person}" th:object="${admin}">
+                                    <input type="hidden" th:field="*{id}"/>
                                     <div class="form-group">
                                         <p class="text-left">Имя</p>
                                         <input class="form-control" type="text" th:field="*{name}" required="" />
