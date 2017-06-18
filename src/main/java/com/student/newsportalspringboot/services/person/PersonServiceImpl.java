@@ -36,7 +36,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person saveAdmin(Admin admin) {
         Person person = new Person();
-        person.setId(admin.getId());
+//         person.setId(admin.getId());
         person.setName(admin.getName());
         person.setSurname(admin.getSurname());
         person.setEmail(admin.getEmail());
