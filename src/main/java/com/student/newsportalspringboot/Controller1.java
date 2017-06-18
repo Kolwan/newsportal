@@ -18,6 +18,6 @@ public class Controller1 {
     @RequestMapping("admin/person/deleteAll")
     public String deleteAll() {
         personRepository.deleteAll();
-        return "redirect:/admin"
+        return "redirect:/admin";
     }
 }
