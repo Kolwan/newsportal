@@ -12,9 +12,9 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class Admin implements Serializable {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.AUTO)
+//     private int id;
     @Email
     @Column(nullable = false, unique = true)
     @NotBlank
